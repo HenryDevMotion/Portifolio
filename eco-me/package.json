@@ -1,0 +1,26 @@
+{
+  "name": "eco-me",
+  "version": "0.1.0",
+  "description": "Gravador de objetivos e ideias com lembretes no terminal",
+  "main": "lib/cli.js",
+  "bin": {
+    "eco-me": "./bin/eco-me-cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node bin/eco-me.js start"
+  },
+  "keywords": [
+    "cli",
+    "productivity",
+    "goals",
+    "reminder"
+  ],
+  "author": "Henry",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^8.2.4",
+    "node-cron": "^3.0.2"
+  }
+}
