@@ -40,26 +40,30 @@ function formatItem(item, index) {
     if (cmd === 'add') {
         const text = rest.join(' ').trim();
 
-        if (!['objetivo', 'ideia'].includes(tipo)) {
-            console.log('Use: eco-me add objetivo "texto" OU eco-me add ideia "texto"');
-            process.exit(1);
-        }
-
-        if (!text) {
-            console.log('Você precisa informar qual é o texto. Exemplo: eco-me add objetivo "Ler 10 páginas do livro X"');
-            process.exit(1);
-        }
-
-        if (tipo === 'objetivo') {
-            const saved = addObjetivo(text);
-            console.log(`Objetivo salvo: ${saved.text}`);
-        } else {
-            const saved = addIdeia(text);
-            console.log(`Ideia salva: ${saved.text}`);
-        }
-
-        process.exit(0);
+    if (!text) {
+        console.log('Você deve informar qual é o texto. Ex.: eco-me add objetivo "Ler 10 páginas por dia do livro X"');
+        process.exit(1);
     }
+
+    const isObjetivo = ['objetivo', 'objetivos'].includes(tipo);
+    const isIdeia = ['ideia', 'ideias'].includes(tipo);
+
+    if (!isObjetivo && !isIdeia) {
+        console.log('Use: eco-me add objetivo "texto" OU eco-me add ideia "texto"');
+        process.exit(1);
+    }
+
+    if (isObjetivo) {
+        const saved = addObjetivo(text);
+        console.log(`Objetivo salvo [${saved.id}] em ${new Date(saved.createdAt).toLocaleString()}: ${saved.text}`);
+    } else {
+        const saved = addIdeia(text);
+        console.log(`Ideia salva [${saved.id}] em ${new Date(saved.createdAt).toLocaleString()}: ${saved.text}`);
+    }
+
+    process.exit(0);
+
+}
 
     if (cmd === 'list') {
         if (tipo === 'objetivos') {
