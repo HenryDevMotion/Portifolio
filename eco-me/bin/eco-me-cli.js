@@ -23,7 +23,18 @@ function showHelp() {
 }
 
 function formatItem(item, index) {
-    const date = new Date(item.createdAt).toLocaleString();
+    const date = new Date(item.createdAt).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    if (item. tipo) {
+        return `${index + 1}. [${item.id}] ${item.text} (${item.tipo}) - ${date}`
+    }
+
     return `${index + 1}. [${item.id}] ${item.text} (${date})`;
 }
 
@@ -38,6 +49,15 @@ function formatItem(item, index) {
     }
 
     if (cmd === 'add') {
+        let prazo = "curto";
+        if (rest.length > 1) {
+            const possivelPrazo = rest[rest.length - 1].toLowerCase();
+            if (["curto", "longo"].includes(possivelPrazo)) {
+                prazo = possivelPrazo;
+                rest.pop;
+            }
+        }
+
         const text = rest.join(' ').trim();
 
     if (!text) {
@@ -54,7 +74,7 @@ function formatItem(item, index) {
     }
 
     if (isObjetivo) {
-        const saved = addObjetivo(text);
+        const saved = addObjetivo(text, prazo);
         console.log(`Objetivo salvo [${saved.id}] em ${new Date(saved.createdAt).toLocaleString()}: ${saved.text}`);
     } else {
         const saved = addIdeia(text);
@@ -73,8 +93,8 @@ function formatItem(item, index) {
                 return console.log('Nenhum objetivo salvo ainda');
             }
 
-            console.log('Objetivos:\n');
-            list.forEach((it, i) => console.log(formatItem(it, i)));
+            console.log('Objetivos:\n---------\n');
+            list.forEach((it, i) => console.log(formatItem(it, i) + "\n"));
             process.exit(0);
         }
 

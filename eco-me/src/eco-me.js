@@ -2,10 +2,8 @@ export function ecoMe(message) {
     console.log(message || "Nenhuma mensagem aqui.");
 }
 
-import { create } from 'domain';
-import fs, { realpathSync } from 'fs';
+import fs from 'fs';
 import path from 'path';
-import { json } from 'stream/consumers';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,14 +30,20 @@ function readJson(filePath) {
     }
 }
 
-function writeJason(filePath, data) {
+function writeJson(filePath, data) {
     ensureDataFiles();
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
-export function addObjetivo(text) {
+export function addObjetivo(text, tipo = "curto") {
     const list = readJson(objetivosFile);
-    const item = { id: Date.now(), text, createdAt: new Date().toISOString() };
+    const item = { 
+        id: Date.now(), 
+        text,
+        tipo,
+        createdAt: new Date().toISOString() 
+    };
+    
     list.push(item);
     writeJson(objetivosFile, list);
     return item;
@@ -59,18 +63,4 @@ export function listObjetivos() {
 
 export function listIdeias() {
     return readJson(ideiasFile);
-}
-
-
-
-
-
-
-// 7) listar itens
-export function listObjetivos() {
-  return readJson(objetivosFile);
-}
-
-export function listIdeias() {
-  return readJson(ideiasFile);
 }
