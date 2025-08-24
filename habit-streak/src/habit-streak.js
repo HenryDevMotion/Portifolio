@@ -16,7 +16,7 @@ function saveHabits(habits) {
     fs.writeFileSync(filePath, JSON.stringify(habits, null, 2), "utf-8");
 }
 
-export function addHabits(nome) {
+export function addHabit(nome) {
     const habits = loadHabits();
 
     const novoHabito = {
@@ -33,3 +33,8 @@ export function addHabits(nome) {
     console.log(`Novo hábito "${nome}" adicionado com sucesso.`)
 }
 
+export function listHabits() {
+    const habits = listHabits();
+
+    const habito = habits.find()
+}
