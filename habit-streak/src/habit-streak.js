@@ -34,7 +34,42 @@ export function addHabit(nome) {
 }
 
 export function listHabits() {
-    const habits = listHabits();
+    const habits = loadHabits();
 
-    const habito = habits.find()
+    if (habits.length === 0) {
+        console.log("Nada cadastrado ainda");
+        return;
+    }
+
+    habits.foreach(h => {
+        console.log(`- ${h.nome} | streak: ${h.streak} | última vez ${h.lastDone || "nunca"}`);
+    });
+}
+
+export function markdone(nome) {
+    const habits = loadHabits();
+
+    const habito = habits.find(h => h.nome.toLoweCase() === nome.toLoweCase());
+
+    if (!habito) {
+        console.log(`Hábito "${nome}" não encontrado.`);
+        return;
+    }
+
+    const hoje = new Date().toISOString().slice(0, 10);
+
+    const ultimaVez = habito.lastDone ? habito.lastDone.slice(0, 10) : null;
+
+    if (ultimaVez === hoje) {
+        console.log(`Você já marcou o hábito "${nome}" hoje`);
+    } else if (ultimaVez === new Date(Date.now() - 86400000).toISOString().slice(0, 10)) {
+        habito.streak += 1;
+    } else {
+        habito.streak = 1;
+    }
+
+    habito.lastDone = new Date().toISOString();
+    saveHabits(habits);
+
+    console.log(`Hábito "S{nome}" foi concluído! Streak atual: ${habito.streak}`);
 }
