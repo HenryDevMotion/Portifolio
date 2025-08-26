@@ -19,6 +19,11 @@ function saveHabits(habits) {
 export function addHabit(nome) {
     const habits = loadHabits();
 
+    if (habits.some(h => h.nome.toLowerCase() === nome.toLowerCase())) {
+        console.log(`O hábito "${nome}" já existe!`);
+        return;
+    }
+
     const novoHabito = {
         id: Date.now(),
         nome,
@@ -33,7 +38,7 @@ export function addHabit(nome) {
     console.log(`Novo hábito "${nome}" adicionado com sucesso.`)
 }
 
-export function listHabits() {
+export function listHabit() {
     const habits = loadHabits();
 
     if (habits.length === 0) {
@@ -41,15 +46,15 @@ export function listHabits() {
         return;
     }
 
-    habits.foreach(h => {
+    habits.forEach(h => {
         console.log(`- ${h.nome} | streak: ${h.streak} | última vez ${h.lastDone || "nunca"}`);
     });
 }
 
-export function markdone(nome) {
+export function markDone(nome) {
     const habits = loadHabits();
 
-    const habito = habits.find(h => h.nome.toLoweCase() === nome.toLoweCase());
+    const habito = habits.find(h => h.nome.toLowerCase() === nome.toLoweCase());
 
     if (!habito) {
         console.log(`Hábito "${nome}" não encontrado.`);
@@ -71,5 +76,5 @@ export function markdone(nome) {
     habito.lastDone = new Date().toISOString();
     saveHabits(habits);
 
-    console.log(`Hábito "S{nome}" foi concluído! Streak atual: ${habito.streak}`);
+    console.log(`Hábito "${nome}" foi concluído! Streak atual: ${habito.streak}`);
 }
