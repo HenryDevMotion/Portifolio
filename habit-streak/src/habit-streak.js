@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { createDeflate } from "zlib";
 
 const filePath = path.resolve("data", "habits.json");
 
@@ -27,7 +26,7 @@ export function addHabit(nome) {
     const novoHabito = {
         id: Date.now(),
         nome,
-        createdeAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         streak: 0,
         lastDone: null
     };
@@ -77,4 +76,24 @@ export function markDone(nome) {
     saveHabits(habits);
 
     console.log(`Hábito "${nome}" foi concluído! Streak atual: ${habito.streak}`);
+}
+
+export function dedupeHabits() {
+    const habits = loadHabits();
+
+    const unique = {};
+    habits.forEach(h => {
+        unique[h.nome.toLowerCase] = h;
+    });
+
+    const deduped = Object.values(unique);
+
+    if (deduped.length === habits.length) {
+        console.log("Nenhum hábito duplicado foi encontrado.");
+        return;
+    }
+
+    saveHabits(deduped);
+
+    console.log(`Removidos ${habits.length - deduped.length} o(s) hábito(s) duplicado(s)`);
 }
