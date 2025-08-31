@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const dataPath = path.resolve(data/fiis.json);
+const dataPath = path.resolve("data/fiis.json");
 
 function loadData() {
     if(!fs.existsSync(dataPath)) {
@@ -54,4 +54,9 @@ export function listMetas() {
         console.log("Nenhuma meta definida");
         return;
     }
+
+    console.log("Suas metas:");
+    data.metas.forEach((m, i) => {
+        console.log(`- ${i + 1}, ${m.descricao} | objetivo: ${m.objetivo} | Status: ${m.atingido ? "Concluído" : "Em andamento"}`);
+    });
 }
